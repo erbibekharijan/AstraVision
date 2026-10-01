@@ -1,0 +1,10 @@
+{
+  "optimal_temperature": 0.05,
+  "uncalibrated_ece": 0.348,
+  "calibrated_ece": 0.0226,
+  "uncalibrated_nll": 0.4955,
+  "calibrated_nll": 0.0308,
+  "suggested_confidence_threshold": 0.75,
+  "suggested_margin_threshold": 0.25,
+  "num_val_samples": 22
+}

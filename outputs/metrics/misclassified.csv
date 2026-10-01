@@ -1,0 +1,4 @@
+file_name,ground_truth,model_a_pred,model_a_conf,model_b_pred,model_b_conf
+images/drone/028-Delaer-RX3-drawing-png.png,drone,aircraft,1.0,aircraft,0.9
+images/military-vehicle/024-T-84-478DU9-driver-station-interior-jpg.jpg,military-vehicle,naval,0.9922,aircraft,0.7201
+images/military-vehicle/023-Blijmoedig-den-vijand-tegemoet-Van-het-Werfkantoor-naar-de-L.jpg,military-vehicle,naval,1.0,naval,0.4647

@@ -1,0 +1,106 @@
+# ASTRA VISION — Configuration File
+# AI-Based Defence Object Recognition System
+
+project:
+  name: "ASTRA VISION"
+  version: "1.0.0"
+  description: "AI-based Defence Equipment Object Recognition System with Explainable AI"
+
+seed: 42
+
+# 5 target defence equipment classes
+classes:
+  - id: 0
+    key: "aircraft"
+    display_name: "Fighter Aircraft"
+    description: "Fixed-wing combat, patrol, or multi-role military aircraft."
+  - id: 1
+    key: "drone"
+    display_name: "Unmanned Aerial Vehicle (UAV / Drone)"
+    description: "Autonomous or remotely piloted unmanned aerial platforms."
+  - id: 2
+    key: "helicopter"
+    display_name: "Military Helicopter"
+    description: "Rotary-wing attack, utility, naval, or transport helicopters."
+  - id: 3
+    key: "military-vehicle"
+    display_name: "Armoured & Military Vehicle"
+    description: "Main battle tanks, armoured personnel carriers, and tactical ground combat vehicles."
+  - id: 4
+    key: "naval"
+    display_name: "Naval Vessel / Warship"
+    description: "Destroyers, frigates, aircraft carriers, submarines, and naval surface combatants."
+
+split:
+  train_ratio: 0.70
+  val_ratio: 0.15
+  test_ratio: 0.15
+  near_duplicate_phash_threshold: 4
+
+image_size: 224
+
+model_a:
+  name: "convnext_tiny"
+  hf_model_id: "facebook/convnext-tiny-224"
+  num_classes: 5
+  batch_size: 8
+  epochs_stage1: 8
+  lr_stage1: 0.001
+  epochs_stage2: 12
+  lr_stage2_backbone: 0.0001
+  lr_stage2_head: 0.001
+  weight_decay: 0.01
+  label_smoothing: 0.1
+  unfreeze_blocks: 2
+  early_stopping_patience: 5
+
+model_b:
+  name: "clip_vit_base"
+  hf_model_id: "openai/clip-vit-base-patch32"
+  prompt_templates:
+    - "a photo of a military {label}"
+    - "a photo of a defence {label}"
+    - "a military {label} in operation"
+    - "a photo of a {label}"
+  class_prompt_mappings:
+    aircraft: "military fighter aircraft"
+    drone: "unmanned military aerial drone or UAV"
+    helicopter: "military combat helicopter"
+    military-vehicle: "military armoured combat vehicle or tank"
+    naval: "military naval warship or vessel"
+
+inference:
+  confidence_threshold: 0.60
+  margin_threshold: 0.15
+  top_k: 3
+  device: "auto" # 'auto', 'cpu', 'cuda', 'mps'
+
+upload:
+  allowed_extensions:
+    - ".jpg"
+    - ".jpeg"
+    - ".png"
+    - ".webp"
+    - ".bmp"
+  max_upload_mb: 10
+  max_image_pixels: 50000000 # 50 Megapixels
+  min_side_px: 32
+
+paths:
+  data_dir: "data"
+  images_dir: "data/images"
+  labels_csv: "data/labels.csv"
+  credits_csv: "data/credits.csv"
+  splits_dir: "data/splits"
+  train_split: "data/splits/train.csv"
+  val_split: "data/splits/val.csv"
+  test_split: "data/splits/test.csv"
+  model_dir: "models"
+  model_a_checkpoint: "models/model_a"
+  model_b_probe: "models/clip_logistic_regression.joblib"
+  calibration_file: "models/calibration.json"
+  outputs_dir: "outputs"
+  metrics_dir: "outputs/metrics"
+  figures_dir: "outputs/figures"
+  history_dir: "outputs/history"
+  history_file: "outputs/history/history.jsonl"

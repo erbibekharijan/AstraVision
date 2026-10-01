@@ -1,0 +1,99 @@
+Metadata-Version: 2.4
+Name: defence-recog
+Version: 1.0.0
+Summary: AI-Based Defence Equipment Object Recognition System
+License: MIT
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: license-file
+
+# 🛡️ ASTRA VISION — AI-Based Defence Object Recognition System
+
+> **Challenge 02 · ASTRA Software Recruitment Challenge · BMSIT**
+> Senior ML Engineering submission — CPU-first PyTorch implementation with Streamlit dashboard.
+
+---
+
+## 🎯 Project Overview
+
+ASTRA VISION classifies military equipment imagery into one of **five defence categories**:
+
+| Category | Label |
+|---|---|
+| Fighter Aircraft / Fixed-Wing Combat | ircraft |
+| UAV / Drone | drone |
+| Military Helicopter (Rotary-Wing) | helicopter |
+| Armoured Vehicle / Main Battle Tank | military-vehicle |
+| Naval Vessel / Warship | 
+aval |
+
+---
+
+## 🏆 Benchmark Results (Held-Out Test Set, N=23)
+
+| Model | Architecture | Test Accuracy | Macro F1 | ECE | CPU Latency |
+|---|---|---|---|---|---|
+| **Model A** (ConvNeXt-Tiny Fine-Tuned) | ConvNeXt-Tiny ~28M | **87.0%** | 0.8632 | 0.1295 | 116ms |
+| **Model B** (CLIP Linear Probe) | ViT-B/32 + LogReg | **87.0%** | 0.8659 | 0.1104 | **0.07ms** |
+| Model B (CLIP Zero-Shot Baseline) | ViT-B/32 Zero-Shot | 87.0% | 0.8652 | 0.0923 | — |
+
+**5-Fold CV** (CLIP Probe): **92.7% ± 4.9% Accuracy**, **Macro-F1 0.9251 ± 0.0498**
+**Temperature Calibration** (Model A): ECE improved from **0.348 → 0.023** (T=0.05).
+
+---
+
+## 🚀 Quick Start
+
+`ash
+pip install -r requirements.txt
+
+make inspect      # Validate dataset
+make splits       # Stratified train/val/test CSVs
+make train        # Fine-tune ConvNeXt-Tiny (Model A)
+make probe        # Train CLIP linear probe (Model B)
+make calibrate    # Temperature scaling
+make evaluate     # Benchmark report
+make app          # Launch Streamlit on :8501
+`
+
+Or: make all to chain everything.
+
+---
+
+## 🧠 Architecture
+
+- **Model A**: ConvNeXt-Tiny fine-tuned in 2 stages (head-only → full), MixUp, label smoothing, cosine LR. Val Macro-F1 = 1.000.
+- **Model B**: CLIP ViT-B/32 frozen backbone + logistic probe (C=100.0), also zero-shot text-prompt baseline.
+- **Calibration**: Temperature scaling — ECE 0.348 → 0.023 (T=0.05).
+- **Explainability**: Grad-CAM saliency maps via pytorch-grad-cam.
+
+---
+
+## 🖥️ Streamlit Dashboard
+
+| Tab | Description |
+|---|---|
+| 🎯 Classify | Upload / select test sample, Grad-CAM, Top-K bar chart, explanations |
+| 📦 Batch Process | Multi-image batch classification with CSV download |
+| 🗃️ Audit History | Persistent gallery of past predictions with thumbnails |
+| 📈 Model Performance | Comparison table, confusion matrices, training curves |
+| ℹ️ About & Credits | Project overview, limitations, dataset attribution |
+
+---
+
+## ⚠️ Limitations
+
+- Closed-set: system cannot reject OOD inputs. Certainty banners mitigate this.
+- Dataset: ~30 images/class from Wikimedia Commons.
+- Educational use only. Not for operational deployment.
+
+---
+
+## 📜 Dataset Attribution
+
+All 150 images from **Wikimedia Commons** (CC BY-SA 4.0, CC BY 4.0, CC0 1.0, Public Domain).
+See 
+esource/credits.csv for full attribution.
+
+*Built for the ASTRA Software Recruitment Challenge — Challenge 02.*

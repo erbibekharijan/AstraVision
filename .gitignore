@@ -1,0 +1,43 @@
+# Environment and Secrets
+.env
+.env.local
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Python cache & artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Hugging Face & PyTorch cache
+.cache/
+hf_cache/
+
+# Model checkpoints and weights (regenerated via scripts/train.py)
+models/*.pt
+models/*.pth
+models/*.bin
+models/*.safetensors
+models/*.joblib
+models/model_a/
+models/*.npy
+
+# Numpy caches
+*.npy
+
+# Output history & uploaded files
+outputs/history/
+!outputs/history/.gitkeep
+
+# OS specific
+.DS_Store
+Thumbs.db
+desktop.ini
